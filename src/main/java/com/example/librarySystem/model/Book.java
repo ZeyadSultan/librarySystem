@@ -1,5 +1,6 @@
 package com.example.librarySystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class Book {
     private String title;
 
     @NotBlank
-    private long isbn;
+    private String isbn;
 
     private Date publicationDate;
 
@@ -32,4 +33,5 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
+
 }
