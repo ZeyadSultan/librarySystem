@@ -57,6 +57,9 @@ public class CustomerServiceImpl implements CustomerService {
             Customer existingCustomer = savedCustomer.get();
             existingCustomer.setName(customer.getName());
             existingCustomer.setEmail(customer.getEmail());
+            existingCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            existingCustomer.setAddress(customer.getAddress());
+            existingCustomer.setPhoneNumber(customer.getPhoneNumber());
             return customerRepository.save(existingCustomer);
         }
     }
@@ -67,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         boolean hasActiveBorrowings = borrowingRecordService.hasActiveBorrowings(findById(id));
 
         if (hasActiveBorrowings) {
-            throw ApiError.badRequest("You can't delete this customer he have current borrowings, delete the borrowings first!!");
+            throw ApiError.badRequest("You can't delete this customer he has current borrowings, delete the borrowings first!!");
         }
 
         customerRepository.deleteById(id);

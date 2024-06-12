@@ -51,6 +51,10 @@ public class BorrowingRecordImpl implements BorrowingRecordService {
         Date borrowingDate = borrowingRecord.getBorrowDate();
         Date returnDate = borrowingRecord.getReturnDate();
 
+        if(!bookService.findById(bookId).isAvailable()) {
+            throw ApiError.badRequest("book isn't available to borrow!");
+        }
+
         List<BorrowingRecord> bookRecords = borrowingRecordRepository.findByBookId(bookId);
 
         if(returnDate.before(borrowingDate)) {
@@ -88,6 +92,10 @@ public class BorrowingRecordImpl implements BorrowingRecordService {
             throw ApiError.badRequest("Return date must be after the borrowing date!");
         }
 
+        if(!bookService.findById(bookId).isAvailable()) {
+            throw ApiError.badRequest("book isn't available to borrow!");
+        }
+
         List<BorrowingRecord> bookRecords = borrowingRecordRepository.findByBookId(bookId);
 
         for (BorrowingRecord record : bookRecords) {
@@ -102,6 +110,7 @@ public class BorrowingRecordImpl implements BorrowingRecordService {
         existingRecord.setCustomer(borrowingRecord.getCustomer());
         existingRecord.setBorrowDate(borrowingRecord.getBorrowDate());
         existingRecord.setReturnDate(borrowingRecord.getReturnDate());
+
         Customer customer = customerService.findById(borrowingRecord.getCustomer().getId());
 
         Book book = bookService.findById(borrowingRecord.getBook().getId());
@@ -135,12 +144,9 @@ public class BorrowingRecordImpl implements BorrowingRecordService {
     public boolean hasActiveBorrowings(Customer customer) {
         List<BorrowingRecord> borrowingRecords = borrowingRecordRepository.findByCustomerId(customer.getId());
 
-        for (BorrowingRecord record : borrowingRecords) {
-            if (record.getReturnDate() == null) {
-                return true;
-            }
-        }
-
-        return false;
+        if(borrowingRecords.size()>0)
+            return true;
+        else
+           return false;
     }
 }
