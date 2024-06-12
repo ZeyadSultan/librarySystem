@@ -25,7 +25,7 @@ public class AuthorServiceImpl implements AuthorService {
     public Author findById(Long id) {
         Optional<Author> author = authorRepository.findById(id);
         if(!author.isPresent()) {
-            throw ApiError.notFound("Id not found!");
+            throw ApiError.notFound("Author id not found!");
         }
         else {
             return author.get();

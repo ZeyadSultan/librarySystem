@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
     public Book findById(Long id) {
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()) {
-            throw ApiError.notFound("Id not found!");
+            throw ApiError.notFound("Book id not found!");
         }
         else {
             return book.get();
@@ -40,9 +40,6 @@ public class BookServiceImpl implements BookService {
     public Book save(Book book) {
         if (book.getAuthor() != null) {
             Author author = authorService.findById(book.getAuthor().getId());
-            if (author == null) {
-                throw ApiError.notFound("Author not found with ID: " + book.getAuthor().getId());
-            }
             book.setAuthor(author);
             
             return bookRepository.save(book);
@@ -55,12 +52,13 @@ public class BookServiceImpl implements BookService {
     public Book updateBook(Long id, Book book) {
         Optional<Book> savedBook = bookRepository.findById(id);
         if(!savedBook.isPresent()) {
-            throw ApiError.notFound("Id not found!");
+            throw ApiError.notFound("book id not found!");
         }
         else {
+            Author author = authorService.findById(book.getAuthor().getId());
             Book existingBook = savedBook.get();
             existingBook.setTitle(book.getTitle());
-            existingBook.setAuthor(book.getAuthor());
+            existingBook.setAuthor(author);
             existingBook.setIsbn(book.getIsbn());
             existingBook.setPublicationDate(book.getPublicationDate());
             return bookRepository.save(existingBook);

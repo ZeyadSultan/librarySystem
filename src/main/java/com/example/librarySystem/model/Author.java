@@ -20,7 +20,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @NotBlank(message = "Name can not be blank!")
+    @NotBlank(message = "Author name can not be blank!")
     private String name;
 
     private Date birthDate;

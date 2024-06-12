@@ -18,10 +18,10 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "Book title can not be blank!")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Book isbn can not be blank!")
     private String isbn;
 
     private Date publicationDate;
