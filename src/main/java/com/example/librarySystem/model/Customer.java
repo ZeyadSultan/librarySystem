@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,13 +21,14 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "name must not be blank")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "email must not be blank")
+    @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "password must not be blank")
     private String password;
 
     private String address;
